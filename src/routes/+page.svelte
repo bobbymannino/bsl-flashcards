@@ -5,6 +5,7 @@
   import { generateRandomInt } from "$lib/generators/numbers";
   import RefreshIcon from "$lib/icons/refresh-icon.svelte";
   import { getRandomElement } from "$lib/utils";
+  import Meta from "./meta.svelte";
 
   let value = $state("BSL");
   let isIntsEnabled = $state(true);
@@ -27,6 +28,8 @@
     value = String(generator());
   }
 </script>
+
+<Meta />
 
 <Container class="grid gap-3 p-6">
   <div class="flex items-center justify-center">
