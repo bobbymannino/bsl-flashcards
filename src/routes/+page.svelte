@@ -5,6 +5,7 @@
   import { generateRandomInt } from "$lib/generators/numbers";
   import RefreshIcon from "$lib/icons/refresh-icon.svelte";
   import { getRandomElement } from "$lib/utils";
+  import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
 
   let value = $state("BSL");
@@ -33,7 +34,9 @@
 
 <Container class="grid gap-3 p-6">
   <div class="flex items-center justify-center">
-    <span class="text-primary-500 text-[5rem] font-black tabular-nums">{value}</span>
+    {#key value}
+      <span in:scale class="text-primary-500 text-[5rem] font-black tabular-nums">{value}</span>
+    {/key}
   </div>
   <div class="flex justify-center">
     <Button onclick={generate}>
