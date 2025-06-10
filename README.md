@@ -7,6 +7,6 @@ Practice your BSL with some simple random flashcards containing:
 - [ ] Numbers (100+)
 - [ ] Currency
 - [x] Days of the week
-- [ ] Months
+- [x] Months
 - [ ] Dates
 - [ ] Times

@@ -1,20 +1,24 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
+  import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
   import { generateRandomInt } from "$lib/generators/numbers";
   import RefreshIcon from "$lib/icons/refresh-icon.svelte";
   import { getRandomElement } from "$lib/utils";
 
   let value = $state("BSL");
   let isIntsEnabled = $state(true);
+  let isDaysOfWeekEnabled = $state(true);
+  let isMonthsEnabled = $state(true);
 
   function generate() {
     let generators = [];
 
     if (isIntsEnabled) generators.push(generateRandomInt);
+    if (isDaysOfWeekEnabled) generators.push(generateRandomDayOfWeek);
+    if (isMonthsEnabled) generators.push(generateRandomMonth);
 
     const generator = getRandomElement(generators);
-    console.log("1", generator);
     if (!generator) {
       alert("No value generator");
       return;
@@ -33,12 +37,24 @@
       <RefreshIcon class="transition-transform duration-500 group-hover/button:-rotate-360" />
     </Button>
   </div>
-  <div class="flex flex-wrap gap-1">
+  <div class="flex flex-wrap gap-2">
     <Button
       onclick={() => (isIntsEnabled = !isIntsEnabled)}
       class={isIntsEnabled ? null : "opacity-50"}
     >
       Numbers (0-100)
+    </Button>
+    <Button
+      onclick={() => (isDaysOfWeekEnabled = !isDaysOfWeekEnabled)}
+      class={isDaysOfWeekEnabled ? null : "opacity-50"}
+    >
+      Days of Week
+    </Button>
+    <Button
+      onclick={() => (isMonthsEnabled = !isMonthsEnabled)}
+      class={isMonthsEnabled ? null : "opacity-50"}
+    >
+      Months
     </Button>
   </div>
 </Container>
