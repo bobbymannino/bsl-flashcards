@@ -1,16 +1,22 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
   import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
   import { generateRandomInt } from "$lib/generators/numbers";
+  import QuestionIcon from "$lib/icons/question-icon.svelte";
+  import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
+  import Onboarding from "./onboarding.svelte";
 
   let value = $state("BSL");
   let isIntsEnabled = $state(true);
   let isDaysOfWeekEnabled = $state(true);
   let isMonthsEnabled = $state(true);
+
+  let doneOnboarding = persistentState("done-onboarding", false);
 
   function disableAllGenerators() {
     isIntsEnabled = false;
@@ -36,6 +42,10 @@
 </script>
 
 <Meta />
+
+{#if browser && !doneOnboarding.value}
+  <Onboarding close={() => (doneOnboarding.value = true)} />
+{/if}
 
 <Container class="grid gap-3 p-6">
   <div class="flex items-center justify-center">
@@ -80,3 +90,9 @@
     </Button>
   </div>
 </Container>
+
+{#if doneOnboarding.value}
+  <Button onclick={() => (doneOnboarding.value = false)} class="fixed right-2 bottom-2">
+    <QuestionIcon />
+  </Button>
+{/if}
