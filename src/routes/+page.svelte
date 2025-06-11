@@ -41,10 +41,7 @@
     if (isGbpPenceEnabled) generators.push([generateRandomGbp, "pence"]);
 
     const generator = getRandomElement(generators);
-    if (!generator) {
-      alert("No value generator");
-      return;
-    }
+    if (!generator) return (value = "BSL");
 
     if (Array.isArray(generator)) value = String(generator[0](...generator.slice(1)));
     else value = String(generator());
