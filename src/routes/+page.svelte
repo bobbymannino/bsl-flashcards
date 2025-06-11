@@ -3,7 +3,7 @@
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
   import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
-  import { generateRandomInt } from "$lib/generators/numbers";
+  import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
   import QuestionIcon from "$lib/icons/question-icon.svelte";
   import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
@@ -15,6 +15,9 @@
   let isIntsEnabled = $state(true);
   let isDaysOfWeekEnabled = $state(true);
   let isMonthsEnabled = $state(true);
+  let isGbpPoundEnabled = $state(true);
+  let isGbpPenceEnabled = $state(true);
+  let isGbpBothEnabled = $state(true);
 
   let doneOnboarding = persistentState("done-onboarding", false);
 
@@ -22,6 +25,9 @@
     isIntsEnabled = false;
     isDaysOfWeekEnabled = false;
     isMonthsEnabled = false;
+    isGbpPoundEnabled = false;
+    isGbpPenceEnabled = false;
+    isGbpBothEnabled = false;
   }
 
   function generate() {
@@ -30,6 +36,9 @@
     if (isIntsEnabled) generators.push(generateRandomInt);
     if (isDaysOfWeekEnabled) generators.push(generateRandomDayOfWeek);
     if (isMonthsEnabled) generators.push(generateRandomMonth);
+    if (isGbpBothEnabled) generators.push(generateRandomGbp);
+    if (isGbpPoundEnabled) generators.push([generateRandomGbp, "pound"]);
+    if (isGbpPenceEnabled) generators.push([generateRandomGbp, "pence"]);
 
     const generator = getRandomElement(generators);
     if (!generator) {
@@ -37,7 +46,8 @@
       return;
     }
 
-    value = String(generator());
+    if (Array.isArray(generator)) value = String(generator[0](...generator.slice(1)));
+    else value = String(generator());
   }
 </script>
 
@@ -90,6 +100,39 @@
       title="Toggle months generator"
     >
       Months
+    </Button>
+    <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isGbpBothEnabled = true;
+      }}
+      onclick={() => (isGbpBothEnabled = !isGbpBothEnabled)}
+      class={isGbpBothEnabled ? null : "opacity-50"}
+      title="Toggle currency (both) generator"
+    >
+      Currency (£25.63)
+    </Button>
+    <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isGbpPoundEnabled = true;
+      }}
+      onclick={() => (isGbpPoundEnabled = !isGbpPoundEnabled)}
+      class={isGbpPoundEnabled ? null : "opacity-50"}
+      title="Toggle currency (pound) generator"
+    >
+      Currency (£25)
+    </Button>
+    <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isGbpPenceEnabled = true;
+      }}
+      onclick={() => (isGbpPenceEnabled = !isGbpPenceEnabled)}
+      class={isGbpPenceEnabled ? null : "opacity-50"}
+      title="Toggle currency (pence) generator"
+    >
+      Currency (63p)
     </Button>
   </div>
 </Container>
