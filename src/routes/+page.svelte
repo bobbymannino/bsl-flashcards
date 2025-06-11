@@ -11,6 +11,7 @@
   import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
   import Onboarding from "./onboarding.svelte";
+  import Timer from "./timer.svelte";
 
   type GeneratorKey = keyof typeof generators;
 
@@ -101,12 +102,14 @@
   </ul>
 </Container>
 
-{#if doneOnboarding.value}
-  <Button
-    onclick={() => (doneOnboarding.value = false)}
-    class="fixed right-2 bottom-2"
-    title="Show welcome screen"
-  >
-    <QuestionIcon />
-  </Button>
-{/if}
+<div class="fixed right-0 bottom-0 left-0 flex justify-between p-2">
+  <div>
+    <Timer {generate} currentWord={value} />
+  </div>
+
+  {#if doneOnboarding.value}
+    <Button onclick={() => (doneOnboarding.value = false)} title="Show welcome screen">
+      <QuestionIcon />
+    </Button>
+  {/if}
+</div>
