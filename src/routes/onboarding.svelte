@@ -17,7 +17,7 @@
 
 <div
   transition:scale={{ start: 0.95 }}
-  class="from-primary-100 to-primary-100 fixed inset-0 bg-gradient-to-br via-white"
+  class="from-primary-100 to-primary-100 fixed inset-0 z-10 bg-gradient-to-br via-white"
 >
   <div class="container mx-auto flex h-full flex-col justify-between p-6 md:h-auto lg:gap-12">
     <h1 class="text-center">Welcome to BSL Flashcards</h1>
