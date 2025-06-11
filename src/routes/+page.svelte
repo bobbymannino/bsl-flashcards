@@ -85,7 +85,10 @@
       </button>
     {/key}
   </div>
-  <ul class="flex flex-wrap gap-2">
+
+  <hr />
+
+  <ul class="flex flex-wrap gap-2" aria-label="Generator list">
     {#each generatorButtons as [key, title] (key)}
       {@const isEnabled = enabledGenerators.includes(key)}
       <li>
@@ -100,16 +103,28 @@
       </li>
     {/each}
   </ul>
+
+  <hr />
+
+  <ul class="flex flex-wrap gap-1" aria-label="Timer list">
+    <li>
+      <Timer {generate} currentWord={value} duration={1000} />
+    </li>
+    <li>
+      <Timer {generate} currentWord={value} duration={1500} />
+    </li>
+    <li>
+      <Timer {generate} currentWord={value} duration={2000} />
+    </li>
+  </ul>
 </Container>
 
 {#if doneOnboarding.value}
-  <div class="fixed right-0 bottom-0 left-0 flex justify-between p-2" transition:fade>
-    <div>
-      <Timer {generate} currentWord={value} />
-    </div>
-
-    <Button onclick={() => (doneOnboarding.value = false)} title="Show welcome screen">
-      <QuestionIcon />
-    </Button>
-  </div>
+  <Button
+    onclick={() => (doneOnboarding.value = false)}
+    title="Show welcome screen"
+    class="fixed right-2 bottom-2"
+  >
+    <QuestionIcon />
+  </Button>
 {/if}

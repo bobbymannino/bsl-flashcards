@@ -6,6 +6,8 @@
     "Click on each generator at the bottom to enable or disable it",
     "Double click on a generator to enable only that one",
     "Click on the flashcard at the top to generate a new word",
+    "Click a timer to toggle automatically generating new words",
+    "Click the '?' button in the bottom right to show this screen",
   ];
 
   type Props = { close: () => void };

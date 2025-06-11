@@ -4,9 +4,11 @@
   type Props = {
     generate: () => void;
     currentWord: string;
+    /** in ms */
+    duration: number;
   };
 
-  let { generate, currentWord }: Props = $props();
+  let { generate, currentWord, duration }: Props = $props();
 
   let disabled = $state(true);
   let interval: NodeJS.Timer | undefined = $state();
@@ -15,12 +17,12 @@
     disabled = !disabled;
 
     if (disabled) clearTimeout(interval);
-    else interval = setTimeout(middle, currentWord.length * 1000);
+    else interval = setTimeout(middle, currentWord.length * duration);
   }
 
   function middle() {
     generate();
-    interval = setTimeout(middle, currentWord.length * 1000);
+    interval = setTimeout(middle, currentWord.length * duration);
   }
 </script>
 
@@ -32,5 +34,5 @@
       !disabled && "bg-primary-500 animate-pulse group-hover/button:bg-white",
     ]}
   ></span>
-  <span>Timer (1s/character)</span>
+  <span>Timer ({duration / 1000}s/character)</span>
 </Button>
