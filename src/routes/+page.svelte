@@ -12,6 +12,12 @@
   let isDaysOfWeekEnabled = $state(true);
   let isMonthsEnabled = $state(true);
 
+  function disableAllGenerators() {
+    isIntsEnabled = false;
+    isDaysOfWeekEnabled = false;
+    isMonthsEnabled = false;
+  }
+
   function generate() {
     let generators = [];
 
@@ -43,18 +49,30 @@
   </div>
   <div class="flex flex-wrap gap-2">
     <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isIntsEnabled = true;
+      }}
       onclick={() => (isIntsEnabled = !isIntsEnabled)}
       class={isIntsEnabled ? null : "opacity-50"}
     >
       Numbers (0-100)
     </Button>
     <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isDaysOfWeekEnabled = true;
+      }}
       onclick={() => (isDaysOfWeekEnabled = !isDaysOfWeekEnabled)}
       class={isDaysOfWeekEnabled ? null : "opacity-50"}
     >
       Days of Week
     </Button>
     <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isMonthsEnabled = true;
+      }}
       onclick={() => (isMonthsEnabled = !isMonthsEnabled)}
       class={isMonthsEnabled ? null : "opacity-50"}
     >
