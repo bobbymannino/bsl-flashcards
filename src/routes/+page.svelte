@@ -3,7 +3,6 @@
   import Container from "$lib/components/ui/container.svelte";
   import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
   import { generateRandomInt } from "$lib/generators/numbers";
-  import RefreshIcon from "$lib/icons/refresh-icon.svelte";
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
@@ -35,13 +34,12 @@
 <Container class="grid gap-3 p-6">
   <div class="flex items-center justify-center">
     {#key value}
-      <span in:scale class="text-primary-500 text-[5rem] font-black tabular-nums">{value}</span>
+      <button
+        in:scale
+        onclick={generate}
+        class="text-primary-500 text-[5rem] font-black tabular-nums">{value}</button
+      >
     {/key}
-  </div>
-  <div class="flex justify-center">
-    <Button onclick={generate}>
-      <RefreshIcon class="transition-transform duration-500 group-hover/button:-rotate-360" />
-    </Button>
   </div>
   <div class="flex flex-wrap gap-2">
     <Button
