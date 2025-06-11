@@ -32,4 +32,8 @@
   p {
     @apply text-pretty;
   }
+
+  hr {
+    @apply bg-primary-100 my-3 h-0.5 rounded border-none;
+  }
 }
