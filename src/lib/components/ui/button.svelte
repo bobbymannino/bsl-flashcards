@@ -14,6 +14,7 @@
     "text-primary-500 bg-white",
     "group/button p-3",
     "disabled:opacity-50",
+    "not-disabled:hover:bg-primary-500 not-disabled:hover:text-white",
     klass,
   ]}
   {...props}
