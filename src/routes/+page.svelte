@@ -65,6 +65,7 @@
       }}
       onclick={() => (isIntsEnabled = !isIntsEnabled)}
       class={isIntsEnabled ? null : "opacity-50"}
+      title="Toggle numbers generator"
     >
       Numbers (0-100)
     </Button>
@@ -75,6 +76,7 @@
       }}
       onclick={() => (isDaysOfWeekEnabled = !isDaysOfWeekEnabled)}
       class={isDaysOfWeekEnabled ? null : "opacity-50"}
+      title="Toggle days of week generator"
     >
       Days of Week
     </Button>
@@ -85,6 +87,7 @@
       }}
       onclick={() => (isMonthsEnabled = !isMonthsEnabled)}
       class={isMonthsEnabled ? null : "opacity-50"}
+      title="Toggle months generator"
     >
       Months
     </Button>
@@ -92,7 +95,11 @@
 </Container>
 
 {#if doneOnboarding.value}
-  <Button onclick={() => (doneOnboarding.value = false)} class="fixed right-2 bottom-2">
+  <Button
+    onclick={() => (doneOnboarding.value = false)}
+    class="fixed right-2 bottom-2"
+    title="Show welcome screen"
+  >
     <QuestionIcon />
   </Button>
 {/if}
