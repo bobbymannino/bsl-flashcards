@@ -1,3 +1,7 @@
+<script lang="ts" module>
+  let current: HTMLButtonElement | undefined;
+</script>
+
 <script lang="ts">
   import Button from "$lib/components/ui/button.svelte";
 
@@ -13,11 +17,17 @@
   let disabled = $state(true);
   let interval: NodeJS.Timer | undefined = $state();
 
-  function toggle() {
+  function toggle(e: MouseEvent & { currentTarget: HTMLButtonElement }) {
     disabled = !disabled;
 
-    if (disabled) clearTimeout(interval);
-    else interval = setTimeout(middle, currentWord.length * duration);
+    if (disabled) {
+      current = e.currentTarget;
+      clearTimeout(interval);
+    } else {
+      if (e.currentTarget != current) current?.click();
+      current = e.currentTarget;
+      interval = setTimeout(middle, currentWord.length * duration);
+    }
   }
 
   function middle() {
