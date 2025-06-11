@@ -50,11 +50,11 @@
 <Container class="grid gap-3 p-6">
   <div class="flex items-center justify-center">
     {#key value}
-      <button
-        in:scale
-        onclick={generate}
-        class="text-primary-500 text-[5rem] font-black tabular-nums">{value}</button
-      >
+      <button in:scale title="Generate new flashcard" onclick={generate}>
+        <h1 class="tabular-nums">
+          {value}
+        </h1>
+      </button>
     {/key}
   </div>
   <div class="flex flex-wrap gap-2">
