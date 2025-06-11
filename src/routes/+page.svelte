@@ -10,6 +10,7 @@
   import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
   import Onboarding from "./onboarding.svelte";
+  import { generateRandomName } from "$lib/generators/names";
 
   let value = $state("BSL");
   let isIntsEnabled = $state(true);
@@ -18,6 +19,7 @@
   let isGbpPoundEnabled = $state(true);
   let isGbpPenceEnabled = $state(true);
   let isGbpBothEnabled = $state(true);
+  let isNameEnabled = $state(true);
 
   let doneOnboarding = persistentState("done-onboarding", false);
 
@@ -28,6 +30,7 @@
     isGbpPoundEnabled = false;
     isGbpPenceEnabled = false;
     isGbpBothEnabled = false;
+    isNameEnabled = false;
   }
 
   function generate() {
@@ -39,6 +42,7 @@
     if (isGbpBothEnabled) generators.push(generateRandomGbp);
     if (isGbpPoundEnabled) generators.push([generateRandomGbp, "pound"]);
     if (isGbpPenceEnabled) generators.push([generateRandomGbp, "pence"]);
+    if (isNameEnabled) generators.push(generateRandomName);
 
     const generator = getRandomElement(generators);
     if (!generator) return (value = "BSL");
@@ -130,6 +134,17 @@
       title="Toggle currency (pence) generator"
     >
       Currency (63p)
+    </Button>
+    <Button
+      ondblclick={() => {
+        disableAllGenerators();
+        isNameEnabled = true;
+      }}
+      onclick={() => (isNameEnabled = !isNameEnabled)}
+      class={isNameEnabled ? null : "opacity-50"}
+      title="Toggle name generator"
+    >
+      Names
     </Button>
   </div>
 </Container>
