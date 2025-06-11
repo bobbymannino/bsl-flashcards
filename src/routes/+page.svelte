@@ -48,7 +48,7 @@
 {/if}
 
 <Container class="grid gap-3 p-6">
-  <div class="flex items-center justify-center">
+  <div class="flex min-h-[50vh] items-center justify-center md:min-h-60">
     {#key value}
       <button in:scale title="Generate new flashcard" onclick={generate}>
         <h1 class="tabular-nums">
