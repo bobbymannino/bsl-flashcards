@@ -3,6 +3,7 @@
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
   import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
+  import { generateRandomName } from "$lib/generators/names";
   import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
   import QuestionIcon from "$lib/icons/question-icon.svelte";
   import { persistentState } from "$lib/stores.svelte";
@@ -10,42 +11,57 @@
   import { scale } from "svelte/transition";
   import Meta from "./meta.svelte";
   import Onboarding from "./onboarding.svelte";
-  import { generateRandomName } from "$lib/generators/names";
+
+  type GeneratorKey = keyof typeof generators;
 
   let value = $state("BSL");
-  let isIntsEnabled = $state(true);
-  let isDaysOfWeekEnabled = $state(true);
-  let isMonthsEnabled = $state(true);
-  let isGbpPoundEnabled = $state(true);
-  let isGbpPenceEnabled = $state(true);
-  let isGbpBothEnabled = $state(true);
-  let isNameEnabled = $state(true);
+  let generators = $state({
+    ints: generateRandomInt,
+    daysOfWeek: generateRandomDayOfWeek,
+    months: generateRandomMonth,
+    gbpBoth: generateRandomGbp,
+    gbpPound: [generateRandomGbp, "pound"],
+    gbpPence: [generateRandomGbp, "pence"],
+    names: generateRandomName,
+  });
+  let enabledGenerators = $state<GeneratorKey[]>([
+    "ints",
+    "daysOfWeek",
+    "gbpBoth",
+    "gbpPence",
+    "gbpPound",
+    "months",
+    "names",
+  ]);
+
+  type GeneratorButton = [GeneratorKey, string];
+  const generatorButtons: GeneratorButton[] = [
+    ["ints", "Numbers (0-100)"],
+    ["months", "Months"],
+    ["daysOfWeek", "Days of the week"],
+    ["gbpBoth", "GBP (£25.95)"],
+    ["gbpPound", "GBP (£25)"],
+    ["gbpPence", "GBP (95p)"],
+    ["names", "Names"],
+  ];
 
   let doneOnboarding = persistentState("done-onboarding", false);
 
-  function disableAllGenerators() {
-    isIntsEnabled = false;
-    isDaysOfWeekEnabled = false;
-    isMonthsEnabled = false;
-    isGbpPoundEnabled = false;
-    isGbpPenceEnabled = false;
-    isGbpBothEnabled = false;
-    isNameEnabled = false;
+  function exclusive(generator: GeneratorKey) {
+    enabledGenerators = [generator];
+  }
+
+  function toggle(generator: GeneratorKey) {
+    enabledGenerators = enabledGenerators.includes(generator)
+      ? enabledGenerators.filter((g) => g !== generator)
+      : [...enabledGenerators, generator];
   }
 
   function generate() {
-    let generators = [];
+    const generatorKey = getRandomElement(enabledGenerators);
+    if (!generatorKey) return (value = "BSL");
 
-    if (isIntsEnabled) generators.push(generateRandomInt);
-    if (isDaysOfWeekEnabled) generators.push(generateRandomDayOfWeek);
-    if (isMonthsEnabled) generators.push(generateRandomMonth);
-    if (isGbpBothEnabled) generators.push(generateRandomGbp);
-    if (isGbpPoundEnabled) generators.push([generateRandomGbp, "pound"]);
-    if (isGbpPenceEnabled) generators.push([generateRandomGbp, "pence"]);
-    if (isNameEnabled) generators.push(generateRandomName);
-
-    const generator = getRandomElement(generators);
-    if (!generator) return (value = "BSL");
+    const generator = generators[generatorKey];
 
     if (Array.isArray(generator)) value = String(generator[0](...generator.slice(1)));
     else value = String(generator());
@@ -68,85 +84,21 @@
       </button>
     {/key}
   </div>
-  <div class="flex flex-wrap gap-2">
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isIntsEnabled = true;
-      }}
-      onclick={() => (isIntsEnabled = !isIntsEnabled)}
-      class={isIntsEnabled ? null : "opacity-50"}
-      title="Toggle numbers generator"
-    >
-      Numbers (0-100)
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isDaysOfWeekEnabled = true;
-      }}
-      onclick={() => (isDaysOfWeekEnabled = !isDaysOfWeekEnabled)}
-      class={isDaysOfWeekEnabled ? null : "opacity-50"}
-      title="Toggle days of week generator"
-    >
-      Days of Week
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isMonthsEnabled = true;
-      }}
-      onclick={() => (isMonthsEnabled = !isMonthsEnabled)}
-      class={isMonthsEnabled ? null : "opacity-50"}
-      title="Toggle months generator"
-    >
-      Months
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isGbpBothEnabled = true;
-      }}
-      onclick={() => (isGbpBothEnabled = !isGbpBothEnabled)}
-      class={isGbpBothEnabled ? null : "opacity-50"}
-      title="Toggle currency (both) generator"
-    >
-      Currency (£25.63)
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isGbpPoundEnabled = true;
-      }}
-      onclick={() => (isGbpPoundEnabled = !isGbpPoundEnabled)}
-      class={isGbpPoundEnabled ? null : "opacity-50"}
-      title="Toggle currency (pound) generator"
-    >
-      Currency (£25)
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isGbpPenceEnabled = true;
-      }}
-      onclick={() => (isGbpPenceEnabled = !isGbpPenceEnabled)}
-      class={isGbpPenceEnabled ? null : "opacity-50"}
-      title="Toggle currency (pence) generator"
-    >
-      Currency (63p)
-    </Button>
-    <Button
-      ondblclick={() => {
-        disableAllGenerators();
-        isNameEnabled = true;
-      }}
-      onclick={() => (isNameEnabled = !isNameEnabled)}
-      class={isNameEnabled ? null : "opacity-50"}
-      title="Toggle name generator"
-    >
-      Names
-    </Button>
-  </div>
+  <ul class="flex flex-wrap gap-2">
+    {#each generatorButtons as [key, title] (key)}
+      {@const isEnabled = enabledGenerators.includes(key)}
+      <li>
+        <Button
+          ondblclick={() => exclusive(key)}
+          onclick={() => toggle(key)}
+          title="Toggle {title} generator"
+          class={isEnabled ? null : "opacity-50"}
+        >
+          {title}
+        </Button>
+      </li>
+    {/each}
+  </ul>
 </Container>
 
 {#if doneOnboarding.value}
