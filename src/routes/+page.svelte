@@ -5,6 +5,11 @@
   import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
   import { generateRandomName } from "$lib/generators/names";
   import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
+  import {
+    generateRandomFarewell,
+    generateRandomGreeting,
+    generateRandomManner,
+  } from "$lib/generators/words";
   import QuestionIcon from "$lib/icons/question-icon.svelte";
   import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
@@ -24,6 +29,9 @@
     gbpPound: [generateRandomGbp, "pound"],
     gbpPence: [generateRandomGbp, "pence"],
     names: generateRandomName,
+    manners: generateRandomManner,
+    greetings: generateRandomGreeting,
+    farewells: generateRandomFarewell,
   });
   let enabledGenerators = $state<GeneratorKey[]>([
     "ints",
@@ -33,6 +41,9 @@
     "gbpPound",
     "months",
     "names",
+    "manners",
+    "farewells",
+    "greetings",
   ]);
 
   type GeneratorButton = [GeneratorKey, string];
@@ -44,6 +55,9 @@
     ["gbpPound", "GBP (£25)"],
     ["gbpPence", "GBP (95p)"],
     ["names", "Names"],
+    ["greetings", "Greetings"],
+    ["farewells", "Farewells"],
+    ["manners", "Manners"],
   ];
 
   let doneOnboarding = persistentState("done-onboarding", false);

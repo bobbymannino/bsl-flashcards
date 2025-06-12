@@ -7,9 +7,11 @@ Practice your BSL with some simple random flashcards containing:
 - [x] Months
 - [x] Currency
 - [x] Names
+- [x] Greetings
+- [x] Farewells
+- [x] Manners
 - [ ] Words
 - [ ] Numbers (100+)
 - [ ] Dates
 - [ ] Times
-- [ ] Greetings
 - [ ] Times of Day
