@@ -15,3 +15,4 @@ Practice your BSL with some simple random flashcards containing:
 - [ ] Dates
 - [ ] Times
 - [ ] Times of Day
+- [ ] Conversations

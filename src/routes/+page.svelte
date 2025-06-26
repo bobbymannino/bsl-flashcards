@@ -18,47 +18,69 @@
   import Onboarding from "./onboarding.svelte";
   import Timer from "./timer.svelte";
 
-  type GeneratorKey = keyof typeof generators;
+  type DotPrefix<T> = {
+    [P in keyof T]: {
+      [C in keyof T[P]]: `${P & string}.${C & string}`;
+    }[keyof T[P]];
+  }[keyof T];
+
+  type GeneratorCategory = keyof typeof generators;
+  type GeneratorKey = DotPrefix<typeof generators>;
+
+  const generators = {
+    Numbers: {
+      ints: generateRandomInt,
+    },
+    Dates: {
+      daysOfWeek: generateRandomDayOfWeek,
+      months: generateRandomMonth,
+    },
+    Currency: {
+      gbpBoth: generateRandomGbp,
+      gbpPound: [generateRandomGbp, "pound"],
+      gbpPence: [generateRandomGbp, "pence"],
+    },
+    General: {
+      names: generateRandomName,
+      manners: generateRandomManner,
+      greetings: generateRandomGreeting,
+      farewells: generateRandomFarewell,
+    },
+  };
 
   let value = $state("BSL");
-  let generators = $state({
-    ints: generateRandomInt,
-    daysOfWeek: generateRandomDayOfWeek,
-    months: generateRandomMonth,
-    gbpBoth: generateRandomGbp,
-    gbpPound: [generateRandomGbp, "pound"],
-    gbpPence: [generateRandomGbp, "pence"],
-    names: generateRandomName,
-    manners: generateRandomManner,
-    greetings: generateRandomGreeting,
-    farewells: generateRandomFarewell,
-  });
   let enabledGenerators = $state<GeneratorKey[]>([
-    "ints",
-    "daysOfWeek",
-    "gbpBoth",
-    "gbpPence",
-    "gbpPound",
-    "months",
-    "names",
-    "manners",
-    "farewells",
-    "greetings",
+    "Numbers.ints",
+    "Dates.daysOfWeek",
+    "Dates.months",
+    "Currency.gbpBoth",
+    "Currency.gbpPence",
+    "Currency.gbpPound",
+    "General.names",
+    "General.manners",
+    "General.farewells",
+    "General.greetings",
   ]);
 
   type GeneratorButton = [GeneratorKey, string];
-  const generatorButtons: GeneratorButton[] = [
-    ["ints", "Numbers (0-100)"],
-    ["months", "Months"],
-    ["daysOfWeek", "Days of the week"],
-    ["gbpBoth", "GBP (£25.95)"],
-    ["gbpPound", "GBP (£25)"],
-    ["gbpPence", "GBP (95p)"],
-    ["names", "Names"],
-    ["greetings", "Greetings"],
-    ["farewells", "Farewells"],
-    ["manners", "Manners"],
-  ];
+  const generatorButtons: Record<GeneratorCategory, GeneratorButton[]> = {
+    Numbers: [["Numbers.ints", "Numbers (0-100)"]],
+    Dates: [
+      ["Dates.daysOfWeek", "Days of the week"],
+      ["Dates.months", "Months"],
+    ],
+    Currency: [
+      ["Currency.gbpBoth", "GBP (£25.95)"],
+      ["Currency.gbpPound", "GBP (£25)"],
+      ["Currency.gbpPence", "GBP (95p)"],
+    ],
+    General: [
+      ["General.names", "Names"],
+      ["General.greetings", "Greetings"],
+      ["General.farewells", "Farewells"],
+      ["General.manners", "Manners"],
+    ],
+  };
 
   let doneOnboarding = persistentState("done-onboarding", false);
 
@@ -76,7 +98,7 @@
     const generatorKey = getRandomElement(enabledGenerators);
     if (!generatorKey) return (value = "BSL");
 
-    const generator = generators[generatorKey];
+    const generator = generators[generatorKey.split(".")[0]][generatorKey.split(".")[1]];
 
     if (Array.isArray(generator)) value = String(generator[0](...generator.slice(1)));
     else value = String(generator());
@@ -100,23 +122,25 @@
     {/key}
   </div>
 
-  <hr />
+  {#each Object.entries(generatorButtons) as [category, buttons] (category)}
+    <hr />
 
-  <ul class="flex flex-wrap gap-2" aria-label="Generator list">
-    {#each generatorButtons as [key, title] (key)}
-      {@const isEnabled = enabledGenerators.includes(key)}
-      <li>
-        <Button
-          ondblclick={() => exclusive(key)}
-          onclick={() => toggle(key)}
-          title="Toggle {title} generator"
-          class={isEnabled ? null : "opacity-50"}
-        >
-          {title}
-        </Button>
-      </li>
-    {/each}
-  </ul>
+    <ul class="flex flex-wrap gap-2" aria-label="{category} generator list">
+      {#each buttons as [key, title] (key)}
+        {@const isEnabled = enabledGenerators.includes(key)}
+        <li>
+          <Button
+            ondblclick={() => exclusive(key)}
+            onclick={() => toggle(key)}
+            title="Toggle {title} generator"
+            class={isEnabled ? null : "opacity-50"}
+          >
+            {title}
+          </Button>
+        </li>
+      {/each}
+    </ul>
+  {/each}
 
   <hr />
 
