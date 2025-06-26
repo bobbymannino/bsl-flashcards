@@ -2,7 +2,11 @@
   import { browser } from "$app/environment";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
-  import { generateRandomDayOfWeek, generateRandomMonth } from "$lib/generators/dates";
+  import {
+    generateRandomDate,
+    generateRandomDayOfWeek,
+    generateRandomMonth,
+  } from "$lib/generators/dates";
   import { generateRandomName } from "$lib/generators/names";
   import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
   import {
@@ -34,6 +38,7 @@
     Dates: {
       daysOfWeek: generateRandomDayOfWeek,
       months: generateRandomMonth,
+      date: generateRandomDate,
     },
     Currency: {
       gbpBoth: generateRandomGbp,
@@ -53,6 +58,7 @@
     "Numbers.ints",
     "Dates.daysOfWeek",
     "Dates.months",
+    "Dates.date",
     "Currency.gbpBoth",
     "Currency.gbpPence",
     "Currency.gbpPound",
@@ -68,6 +74,7 @@
     Dates: [
       ["Dates.daysOfWeek", "Days of the week"],
       ["Dates.months", "Months"],
+      ["Dates.date", "Date"],
     ],
     Currency: [
       ["Currency.gbpBoth", "GBP (£25.95)"],
@@ -112,7 +119,7 @@
 {/if}
 
 <Container class="grid gap-3 p-6">
-  <div class="flex min-h-[50vh] items-center justify-center md:min-h-60">
+  <div class="flex min-h-[50vh] items-center justify-center md:min-h-72">
     {#key value}
       <button in:scale title="Generate new flashcard" onclick={generate}>
         <h1 class="tabular-nums">

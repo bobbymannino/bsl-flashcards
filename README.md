@@ -10,9 +10,9 @@ Practice your BSL with some simple random flashcards containing:
 - [x] Greetings
 - [x] Farewells
 - [x] Manners
+- [x] Dates
 - [ ] Words
 - [ ] Numbers (100+)
-- [ ] Dates
 - [ ] Times
 - [ ] Times of Day
 - [ ] Conversations
