@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
   import Link from "$lib/components/ui/link.svelte";
@@ -15,11 +14,8 @@
     generateRandomGreeting,
     generateRandomManner,
   } from "$lib/generators/words";
-  import QuestionIcon from "$lib/icons/question-icon.svelte";
-  import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
-  import Onboarding from "./onboarding.svelte";
   import Timer from "./timer.svelte";
   import Meta from "$lib/components/meta.svelte";
 
@@ -90,8 +86,6 @@
     ],
   };
 
-  let doneOnboarding = persistentState("done-onboarding", false);
-
   function exclusive(generator: GeneratorKey) {
     enabledGenerators = [generator];
   }
@@ -114,10 +108,6 @@
 </script>
 
 <Meta />
-
-{#if browser && !doneOnboarding.value}
-  <Onboarding close={() => (doneOnboarding.value = true)} />
-{/if}
 
 <Container class="grid gap-3 p-6">
   <div class="flex min-h-[50vh] items-center justify-center md:min-h-72">
@@ -168,13 +158,3 @@
 
   <Link href="/conversations" class="w-fit">Conversations</Link>
 </Container>
-
-{#if doneOnboarding.value}
-  <Button
-    onclick={() => (doneOnboarding.value = false)}
-    title="Show welcome screen"
-    class="fixed right-2 bottom-2"
-  >
-    <QuestionIcon />
-  </Button>
-{/if}
