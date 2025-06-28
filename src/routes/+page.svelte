@@ -19,9 +19,9 @@
   import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
-  import Meta from "./meta.svelte";
   import Onboarding from "./onboarding.svelte";
   import Timer from "./timer.svelte";
+  import Meta from "$lib/components/meta.svelte";
 
   type DotPrefix<T> = {
     [P in keyof T]: {
