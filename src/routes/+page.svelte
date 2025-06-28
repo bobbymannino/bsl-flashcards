@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
+  import Link from "$lib/components/ui/link.svelte";
   import {
     generateRandomDate,
     generateRandomDayOfWeek,
@@ -162,6 +163,10 @@
       <Timer {generate} currentWord={value} duration={2000} />
     </li>
   </ul>
+
+  <hr />
+
+  <Link href="/conversations" class="w-fit">Conversations</Link>
 </Container>
 
 {#if doneOnboarding.value}
