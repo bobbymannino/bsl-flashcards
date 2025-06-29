@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Meta from "$lib/components/meta.svelte";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
   import Link from "$lib/components/ui/link.svelte";
@@ -9,6 +10,7 @@
   } from "$lib/generators/dates";
   import { generateRandomName } from "$lib/generators/names";
   import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
+  import { generateRandomTime } from "$lib/generators/times";
   import {
     generateRandomFarewell,
     generateRandomGreeting,
@@ -17,7 +19,6 @@
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
   import Timer from "./timer.svelte";
-  import Meta from "$lib/components/meta.svelte";
 
   type DotPrefix<T> = {
     [P in keyof T]: {
@@ -36,6 +37,7 @@
       daysOfWeek: generateRandomDayOfWeek,
       months: generateRandomMonth,
       date: generateRandomDate,
+      time: generateRandomTime,
     },
     Currency: {
       gbpBoth: generateRandomGbp,
@@ -56,6 +58,7 @@
     "Dates.daysOfWeek",
     "Dates.months",
     "Dates.date",
+    "Dates.time",
     "Currency.gbpBoth",
     "Currency.gbpPence",
     "Currency.gbpPound",
@@ -72,6 +75,7 @@
       ["Dates.daysOfWeek", "Days of the week"],
       ["Dates.months", "Months"],
       ["Dates.date", "Date"],
+      ["Dates.time", "Time"],
     ],
     Currency: [
       ["Currency.gbpBoth", "GBP (£25.95)"],
