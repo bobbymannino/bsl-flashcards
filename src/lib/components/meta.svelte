@@ -1,5 +1,10 @@
 <script lang="ts">
-  const title = "BSL Flashcards";
+  type Props = {
+    /** @default "BSL Flashcards" */
+    title?: string;
+  };
+
+  let { title = "BSL Flashcards" }: Props = $props();
 </script>
 
 <svelte:head>

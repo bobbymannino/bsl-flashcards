@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import Meta from "$lib/components/meta.svelte";
   import Button from "$lib/components/ui/button.svelte";
   import Container from "$lib/components/ui/container.svelte";
+  import Link from "$lib/components/ui/link.svelte";
   import {
     generateRandomDate,
     generateRandomDayOfWeek,
@@ -9,17 +10,14 @@
   } from "$lib/generators/dates";
   import { generateRandomName } from "$lib/generators/names";
   import { generateRandomGbp, generateRandomInt } from "$lib/generators/numbers";
+  import { generateRandomTime } from "$lib/generators/times";
   import {
     generateRandomFarewell,
     generateRandomGreeting,
     generateRandomManner,
   } from "$lib/generators/words";
-  import QuestionIcon from "$lib/icons/question-icon.svelte";
-  import { persistentState } from "$lib/stores.svelte";
   import { getRandomElement } from "$lib/utils";
   import { scale } from "svelte/transition";
-  import Meta from "./meta.svelte";
-  import Onboarding from "./onboarding.svelte";
   import Timer from "./timer.svelte";
 
   type DotPrefix<T> = {
@@ -39,6 +37,7 @@
       daysOfWeek: generateRandomDayOfWeek,
       months: generateRandomMonth,
       date: generateRandomDate,
+      time: generateRandomTime,
     },
     Currency: {
       gbpBoth: generateRandomGbp,
@@ -59,6 +58,7 @@
     "Dates.daysOfWeek",
     "Dates.months",
     "Dates.date",
+    "Dates.time",
     "Currency.gbpBoth",
     "Currency.gbpPence",
     "Currency.gbpPound",
@@ -75,6 +75,7 @@
       ["Dates.daysOfWeek", "Days of the week"],
       ["Dates.months", "Months"],
       ["Dates.date", "Date"],
+      ["Dates.time", "Time"],
     ],
     Currency: [
       ["Currency.gbpBoth", "GBP (£25.95)"],
@@ -88,8 +89,6 @@
       ["General.manners", "Manners"],
     ],
   };
-
-  let doneOnboarding = persistentState("done-onboarding", false);
 
   function exclusive(generator: GeneratorKey) {
     enabledGenerators = [generator];
@@ -113,10 +112,6 @@
 </script>
 
 <Meta />
-
-{#if browser && !doneOnboarding.value}
-  <Onboarding close={() => (doneOnboarding.value = true)} />
-{/if}
 
 <Container class="grid gap-3 p-6">
   <div class="flex min-h-[50vh] items-center justify-center md:min-h-72">
@@ -162,14 +157,8 @@
       <Timer {generate} currentWord={value} duration={2000} />
     </li>
   </ul>
-</Container>
 
-{#if doneOnboarding.value}
-  <Button
-    onclick={() => (doneOnboarding.value = false)}
-    title="Show welcome screen"
-    class="fixed right-2 bottom-2"
-  >
-    <QuestionIcon />
-  </Button>
-{/if}
+  <hr />
+
+  <Link href="/conversations" class="w-fit">Conversations</Link>
+</Container>

@@ -8,6 +8,10 @@ export const GET: RequestHandler = async () => {
 		<loc>${PUBLIC_BASE_URL}/</loc>
 		<lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
 	</url>
+	<url>
+		<loc>${PUBLIC_BASE_URL}/conversations/</loc>
+		<lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+	</url>
 </urlset>`;
 
   return new Response(sitemap, {

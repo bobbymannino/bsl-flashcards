@@ -29,6 +29,10 @@
     @apply text-primary-500 text-[14vw]/[14vw] font-black lg:text-[6rem]/22;
   }
 
+  h2 {
+    @apply text-primary-500 text-[8vw]/[9vw] font-black lg:text-[4.5rem]/19;
+  }
+
   p {
     @apply text-pretty;
   }

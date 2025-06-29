@@ -11,8 +11,8 @@ Practice your BSL with some simple random flashcards containing:
 - [x] Farewells
 - [x] Manners
 - [x] Dates
+- [x] Times
+- [x] Conversations
 - [ ] Words
 - [ ] Numbers (100+)
-- [ ] Times
 - [ ] Times of Day
-- [ ] Conversations
