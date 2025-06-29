@@ -17,9 +17,9 @@
 <Container class="grid gap-3 p-6">
   <div class="space-y-6">
     {#each convo as person, i (person)}
-      <div class={["max-w-5/6 md:max-w-4/5", i % 2 && "ml-auto text-right opacity-75"]}>
+      <div class={["max-w-5/6 md:max-w-4/5", i % 2 && "ml-auto text-right"]}>
         {#each person as phrase (phrase)}
-          <h2 class="text-wrap">
+          <h2 class={["text-wrap", i % 2 ? "text-primary-900" : "text-primary-400"]}>
             {phrase}
           </h2>
         {/each}
